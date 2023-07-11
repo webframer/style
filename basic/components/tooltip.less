@@ -1,0 +1,72 @@
+@import "../_mixins";
+
+@tooltipSize: u(7); // pointer size
+@tooltipOffset: @tooltipSize + u(3); // pointer offset
+
+.tooltip {
+  cursor: auto; // do not inherit parent element by default
+  text-transform: none;
+  background: transparent;
+
+  &.t-pos-top {
+    padding-bottom: @tooltipOffset;
+
+    > *:after {
+      margin-left: -@tooltipSize;
+      top: calc(100% - 0.3px); // fix artifact in Chrome
+      left: 50%;
+      // https://bennettfeely.com/clippy/
+      clip-path: polygon(0 0, 100% 0, 50% 50%);
+    }
+  }
+
+  &.t-pos-bottom {
+    padding-top: @tooltipOffset;
+
+    > *:after {
+      margin-left: -@tooltipSize;
+      bottom: calc(100% - 0.3px); // fix artifact in Chrome
+      left: 50%;
+      clip-path: polygon(0 100%, 100% 100%, 50% 50%);
+    }
+  }
+
+  &.t-pos-right {
+    padding-left: @tooltipOffset;
+
+    > *:after {
+      margin-top: -@tooltipSize;
+      top: 50%;
+      right: calc(100% - 0.3px); // fix artifact in Chrome
+      clip-path: polygon(100% 0, 50% 50%, 100% 100%);
+    }
+  }
+
+  &.t-pos-left {
+    padding-right: @tooltipOffset;
+
+    > *:after {
+      margin-top: -@tooltipSize;
+      top: 50%;
+      left: calc(100% - 0.3px); // fix artifact in Chrome
+      clip-path: polygon(50% 50%, 0 0, 0 100%);
+    }
+  }
+}
+
+.tooltip__content {
+  padding: var(--padding-smaller) var(--padding-small);
+  border-radius: var(--radius);
+  background: var(--grey-lightest-2x);
+  max-width: 100vw;
+  max-height: 100vh;
+  //overflow: auto; // this makes the pointer disappear, instead, make inner content scrollable
+
+  // To inherit background color, draw the arrow as div, instead of border
+  &:after {
+    .object();
+    .square(@tooltipSize * 2);
+    position: absolute;
+    background: inherit;
+  }
+}

@@ -1,0 +1,254 @@
+@import "../_mixins";
+@import "./animation";
+
+// @Note: custom opacity can be set to parent wrapper
+.appear-on-hover {
+  &:extend(.disappear-slow all);
+  //z-index: 1; // this should be set separately to avoid overlay bugs. .z-1 can be used to force tooltip overlay
+
+  @{select-interaction},
+  &:focus-within, // to wrap buttons
+  *:hover > &,
+  *:focus > &,
+  *:active > & {
+    &:extend(.appear all);
+  }
+}
+
+.appear-on-hover-only {
+  opacity: 0;
+  //z-index: 1;
+
+  @{select-interaction},
+  &:focus-within, // to wrap buttons
+  *:hover > &,
+  *:focus > &,
+  *:active > & {
+    &:extend(.appear all);
+  }
+}
+
+.box-highlight {
+  .box-highlight();
+}
+
+.box-shadow {
+  .box-shadow();
+}
+
+.box-shadow-large {
+  box-shadow: 0 u(5) u(8) var(--shadow-light);
+}
+
+.box-shadow-larger {
+  box-shadow: 0 u(10) u(16) var(--shadow-light);
+}
+
+.box-shadow-largest {
+  box-shadow: 0 u(25) u(40) var(--shadow-light);
+}
+
+.box-shadow-right {
+  .box-shadow(@opacity: 0.1; @x: u(1); @y: 0; @blur: u(3));
+}
+
+.inner-shadow {
+  .inner-shadow();
+}
+
+.no-box-shadow {
+  box-shadow: none;
+}
+
+.circle {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+
+  @{select-interaction} {
+    border-radius: 50%;
+  }
+}
+
+.circular {
+  display: inline-flex;
+  box-sizing: content-box;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-width: var(--font-base);
+  line-height: 1;
+  padding: var(--padding-small);
+  border-radius: var(--radius-round);
+}
+
+.circular-small {
+  &:extend(.circular all);
+  padding: var(--padding-smallest);
+  min-width: var(--font-smaller);
+}
+
+.crossed { // x cross element
+  @color: var(--error-darkest);
+  background: linear-gradient(to top left,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0) calc(50% - 0.8px),
+  @color 50%,
+  rgba(0, 0, 0, 0) calc(50% + 0.8px),
+  rgba(0, 0, 0, 0) 100%),
+  linear-gradient(to top right,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0) calc(50% - 0.8px),
+  @color 50%,
+  rgba(0, 0, 0, 0) calc(50% + 0.8px),
+  rgba(0, 0, 0, 0) 100%);
+}
+
+.crossed-right { // single slash to the top right (null value swatch)
+  @color: var(--error-darkest);
+  background: linear-gradient(to top left,
+  rgba(0, 0, 0, 0) 0%,
+  rgba(0, 0, 0, 0) calc(50% - 2px),
+  @color 50%,
+  rgba(0, 0, 0, 0) calc(50% + 2px),
+  rgba(0, 0, 0, 0) 100%);
+}
+
+.embossed {
+  .embossed();
+}
+
+.debossed {
+  .debossed();
+}
+
+.debossed--inputs {
+  .input,
+  .textarea,
+  .select {
+    .debossed();
+
+    @{select-interaction},
+    &:focus-within,
+    &.active {
+      border-color: var(--primary);
+    }
+  }
+}
+
+// Apply to .input--wrapper > .input
+.input-on-hover {
+  input:not(:focus):not(:hover) {
+    border-color: transparent;
+  }
+
+  input:hover:not(:focus) {
+    cursor: pointer;
+  }
+
+  @{select-icon} {
+    color: var(--neutral-dark);
+    pointer-events: none;
+  }
+}
+
+.input--wrapper.border-on-hover {
+  > .input {
+    &:extend(.input-on-hover all);
+  }
+}
+
+.interaction {
+  &:hover, &:focus {
+    &:extend(.outline all);
+    transition: 200ms;
+  }
+}
+
+.no-interaction {
+  &:hover, &:focus {
+    &:extend(.no-outline all);
+    transition: none;
+  }
+}
+
+// Outer outline
+.outline {
+  .outline();
+}
+
+// Inner outline
+.outline-as-shadow {
+  .outline-as-shadow();
+}
+
+// Outline colors
+.colors(@selectorPrefix: ~'.outline-'; @property: outline-color;);
+
+// May have no pointer events to disable focusing altogether
+.no-focus {
+  .no-outline();
+}
+
+// Only disables outline style (i.e. when focused)
+.no-outline {
+  .no-outline();
+}
+
+// ASPECT RATIOS ===============================================================
+.square {
+  aspect-ratio: 1 / 1;
+}
+
+// Safari had bugs with aspect-ratio in 2022.
+.squared { // wrapper to get aspect-square container for inner 'position-fill' component
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 100%; // this does not offset borders, so the final height is slightly more than width
+}
+
+.aspect-16-9 {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  // Set padding to add custom UI (ex. YouTube video controls)
+  //padding-top: 25px;
+}
+
+// CURSORS =====================================================================
+
+.draggable {
+  &:hover {
+    cursor: move;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.draggable-tap {
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.no-pointer {
+  cursor: auto;
+}
+
+.no-pointer-events {
+  pointer-events: none;
+}
+
+.disabled, *:disabled {
+  cursor: default;
+}

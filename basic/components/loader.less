@@ -1,0 +1,27 @@
+@import 'styles/_mixins';
+
+/* Fade In Loading */
+@keyframes fade-in--loading {
+  // hide for the first 200 milliseconds because it seems instant to human
+  0% {opacity: 0;}
+  30% {opacity: 0;}
+  100% {opacity: 1;}
+}
+
+.loader {
+  .position-fill();
+  z-index: 9;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  background: var(--highlight-lighter);
+  backdrop-filter: blur(7px);
+  border-radius: inherit;
+  animation: fade-in--loading 666ms forwards;
+}
+
+.loading--placeholder {
+  .position-fill();
+  min-width: u(20);
+  min-height: u(20);
+}

@@ -1,0 +1,58 @@
+@import "../_mixins";
+
+@tabsActiveBorderSize: u(3);
+@tabsActiveBorderColor: var(--primary-light);
+@tabsHoverBgColor: var(--shadow-lightest);
+//@tabsActiveColor: var(--primary-light);
+
+.tabs__tab {
+  padding-block-start: var(--padding-smaller);
+  padding-block-end: var(--padding-smaller);
+  padding-inline-start: var(--padding);
+  padding-inline-end: var(--padding);
+
+  @{select-interaction} {
+    background-color: @tabsHoverBgColor;
+  }
+
+  // Underlined border (disable because it looks messy and can override user styling)
+  //.row > & {
+  //  border-block-end: var(--border);
+  //
+  //  &.active {
+  //    border-block-end-color: @tabsActiveColor;
+  //  }
+  //}
+  //
+  //.col > & {
+  //  border-inline-end: var(--border);
+  //
+  //  &.active {
+  //    border-inline-end-color: @tabsActiveColor;
+  //  }
+  //}
+
+  &.active {
+    // Underline under each tab
+    &:after {
+      .object();
+      position: absolute;
+      background: @tabsActiveBorderColor;
+      border-radius: @tabsActiveBorderSize / 4;
+
+      .row > & {
+        inset-block-end: 0;
+        inset-inline-start: 0;
+        width: 100%;
+        height: @tabsActiveBorderSize;
+      }
+
+      .col > & {
+        inset-block-start: 0;
+        inset-inline-end: 0;
+        width: @tabsActiveBorderSize;
+        height: 100%;
+      }
+    }
+  }
+}

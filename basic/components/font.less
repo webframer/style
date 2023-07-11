@@ -1,0 +1,155 @@
+@import "../_mixins";
+
+.base-font {
+  .font()
+}
+
+.font-family-secondary {
+  font-family: @font-family-secondary;
+}
+
+.text {
+  &.normal {
+    font-weight: @font-weight;
+  }
+
+  // Tailwind has this without max-width
+  //&.truncate {
+  //  .text-truncate();
+  //}
+
+  &.left {
+    &:extend(.text-align-left);
+  }
+
+  &.start {
+    &:extend(.text-align-start);
+  }
+
+  &.center {
+    text-align: center;
+  }
+
+  &.end {
+    &:extend(.text-align-end);
+  }
+
+  &.right {
+    &:extend(.text-align-right);
+  }
+
+  &.wrap {
+    white-space: normal;
+  }
+
+  //> .text,
+  //> @{select-icon} {
+  //  &:not(:only-child):not(:last-child) {
+  //    margin-right: @size-base-space;
+  //  }
+  //}
+
+  @{select-icon} {
+    vertical-align: text-bottom; // good for icon with normal text, for titles, use `baseline`
+  }
+}
+
+// !IMPORTANT: this could result in recursive loop that produces over 12000 lines of code for some reason.
+// Make sure all other .less files sharing the same folder do not @import other less files,
+// and let it reference or extend classes implicitly.
+// This bug is easily detected, because less compile time will be in seconds, instead of milliseconds.
+.colors(@selectorPrefix: ~'.text-';);
+
+.bold {
+  .bold();
+}
+
+.break-word {
+  word-break: break-word;
+}
+
+.font-size-inherit {
+  font-size: inherit;
+}
+
+.font-base {
+  font-size: var(--font-base);
+}
+
+.font-small {
+  font-size: var(--font-small);
+}
+
+.font-smaller {
+  font-size: var(--font-smaller);
+}
+
+.font-smallest {
+  font-size: var(--font-smallest);
+}
+
+.font-large {
+  font-size: var(--font-large);
+}
+
+.font-larger {
+  font-size: var(--font-larger);
+}
+
+.font-largest {
+  font-size: var(--font-largest);
+}
+
+.font-2x {
+  font-size: var(--font-2x);
+}
+
+.strike { // text-decoration matches the font color, whereas `text-decoration-line` can have separate color
+  text-decoration: line-through; // this is different from Tailwind `line-though`, which uses `text-decoration-line`
+}
+
+// !important: use 'text-align-start' for rtl support
+.text-align-left {
+  text-align: left;
+}
+
+// !important: use 'text-align-end' for rtl support
+.text-align-right {
+  text-align: right;
+}
+
+// To avoid overriding nested input style, use Tailwind 'text-start`
+.text-align-start {
+  text-align: start; // rtl automatically reverts
+}
+
+// To avoid overriding nested input style, use Tailwind 'text-end`
+.text-align-end {
+  text-align: end; // rtl automatically reverts
+}
+
+.text-shadow {
+  .text-shadow();
+}
+
+.text-shadow-soft {
+  .text-shadow(@opacity: 0.25; @blur: u(3););
+}
+
+.text-highlight {
+  .text-highlight();
+}
+
+.text-outline {
+  .text-outline();
+}
+
+.hyphen {
+  word-break: break-word;
+}
+
+@supports (hyphens: auto) {
+  .hyphen {
+    hyphens: auto; // requires <html lang="en"> attribute
+  }
+}

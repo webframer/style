@@ -1,0 +1,186 @@
+@import "../_mixins";
+
+// UploadGrid Component ------------------------------------------------------------------------------------------------
+.upload-grid {
+  flex-wrap: wrap;
+
+  &.loading {
+    border: var(--input-border);
+    border-radius: var(--input-radius);
+  }
+}
+
+.upload-grid__item {
+  width: 100%;
+  word-break: break-word; // prevent layout change when inner text is too long
+
+  > .upload {
+    flex: 1;
+  }
+}
+
+// Count, type.name or File.name, width x height or size
+.upload__file__label,
+.upload__file__size {
+  font-size: var(--font-smaller);
+  position: absolute;
+  padding: 0.25em 0.5em;
+  margin: ~'calc(var(--border-size) * 2)'; // to avoid border blur
+  backdrop-filter: blur(12px);
+  border-radius: inherit;
+}
+
+.upload__file__size {
+  bottom: 0;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  margin: auto; // prevents text from wrapping
+}
+
+.upload__file__preview {
+  border-radius: inherit;
+}
+
+img.upload__file__preview {
+  width: 100%;
+  height: auto;
+}
+
+// Upload Component ----------------------------------------------------------------------------------------------------
+.upload {
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+  border-style: dashed;
+
+  @{select-interaction},
+  &:focus-within,
+  &.active {
+    border-color: var(--primary);
+    border-style: solid;
+
+    > i.upload__icon-select {
+      border-color: var(--primary);
+    }
+  }
+
+  &:focus,
+  &:focus-within,
+  &.active {
+    .as-focus();
+
+    > i.upload__icon-select {
+      .as-focus();
+    }
+  }
+
+  // Drag Over state
+  &.active {
+    background-color: ~'hsl(var(---primary) / 0.2)';
+  }
+
+  &.squared > label.upload__label {
+    .position-fill();
+  }
+
+  &.disabled,
+  &.readonly,
+  &.loading {
+    pointer-events: none;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &.loading,
+  &.readonly {
+    border-style: var(--input-border-style);
+  }
+}
+
+// Wrap inner content in label, so that it could trigger input, even if user enables pointer events
+label.upload__label {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+input.upload__input {
+  .position-fill();
+  opacity: 0;
+
+  &:not([readonly]):not(:disabled) {
+    cursor: pointer;
+
+    // fix for cursor style - this disables default input type file button appearance
+    &::-webkit-file-upload-button {
+      cursor: pointer;
+    }
+  }
+}
+
+// Default placeholder icon
+i.upload__icon {
+  font-size: 200%;
+  margin: 0.5em;
+}
+
+// Default uploaded file text
+.upload__placeholder,
+.upload__text {
+  margin: 1em;
+}
+
+.upload__placeholder {
+  opacity: 0.5;
+}
+
+i.upload__icon-select,
+i.upload__icon-remove {
+  position: absolute;
+  inset-inline-end: -0.125em;
+  inset-block-end: -0.125em;
+  transition: transform var(--duration);
+  font-size: 200%;
+  border: var(--input-border);
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: var(--bg);
+
+  @{select-interaction} {
+    .as-focus();
+    border-color: var(--primary);
+  }
+
+  // Default empty icon
+  &.icon- {
+    .squareMin(1em);
+
+    &:before,
+    &:after {
+      .position-centered();
+      .object();
+      background: currentColor;
+      border-radius: var(--radius-round);
+    }
+
+    &:before {
+      width: var(--input-border-size);
+      height: 0.6em;
+    }
+
+    &:after {
+      width: 0.6em;
+      height: var(--input-border-size);
+    }
+  }
+}
+
+// style default icons (when name is undefined)
+i.upload__icon-remove.icon- {
+  transform: rotate(45deg);
+}

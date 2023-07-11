@@ -1,0 +1,75 @@
+@import "../_mixins";
+
+.accordion {
+  > .expand.open {
+    background: var(--shadow-lightest-2x);
+  }
+}
+
+.expand__tab {
+  cursor: pointer; // to avoid flicking cursor during animation
+}
+
+// Expand/Collapse Icon styles
+.caret--expanded {
+  transform: rotate(90deg);
+  transition: transform var(--expand-duration, var(--duration));
+}
+
+.caret--collapsed {
+  transition: transform var(--expand-duration, var(--duration));
+
+  &.rtl,
+  .rtl & {
+    transform: rotate(180deg);
+  }
+}
+
+// Expandable Styles -------------------------------------------------------------------------------
+@expandableCaretSize: 1.75em;
+
+.expandable__panel {
+  // without Icon, tab size of 1em is good, with Icon - 1.5em
+  padding-inline-start: ~'calc(var(--expand-tabs, 0) * 1.5em)';
+}
+
+.expandable__panel.active {
+  .outline-as-shadow();
+  border-radius: var(--radius-smaller);
+}
+
+.expandable .selected,
+.expandable__panel.active {
+  background-color: ~'hsl(var(---primary) / 0.15)';
+  .text-highlight();
+}
+
+.expandable__panel__caret { // button
+  .fadeOnBlur(0.6);
+  width: @expandableCaretSize;
+  text-shadow: inherit;
+  font-size: inherit;
+  height: auto;
+  min-height: auto;
+  padding: 0;
+
+  &.btn {
+    background: transparent !important;
+    border-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    outline: none;
+  }
+}
+
+.expandable__panel__spacer {
+  padding-inline-start: @expandableCaretSize;
+}
+
+.expandable__panel__label {
+  .text-truncate();
+  padding-inline-end: 0.5em;
+  margin-block-start: auto;
+  margin-block-end: auto;
+  //max-width: 13em; // allow text to expand as needed
+}

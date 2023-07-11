@@ -1,0 +1,38 @@
+@import "../_mixins";
+//@import "modal"; // better to use implicit reference, because it reduces chances of recursive bugs
+
+.popup {
+  &:extend(.modal all);
+
+  &.active {
+    z-index: 9999999; // navbar z-index is 1000
+  }
+}
+
+.popup__backdrop {
+  &:extend(.modal__backdrop all);
+}
+
+.popup__box {
+  &:extend(.modal__box all);
+
+  &--alert {
+    text-align: center;
+  }
+}
+
+.popup__content {
+  &:extend(.modal__content all);
+}
+
+.popup__title {
+  &:extend(.modal__title all);
+}
+
+.popup__body {
+  &:extend(.modal__body all);
+}
+
+.popup__footer {
+  &:extend(.modal__footer all);
+}

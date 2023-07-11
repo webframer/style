@@ -1,0 +1,423 @@
+@import "../_mixins";
+
+.bg-grid {
+  @color: var(--border-color);
+  background-size: 10px 10px;
+  background-image: linear-gradient(to right, @color 1px, transparent 1px),
+  linear-gradient(to bottom, @color 1px, transparent 1px);
+}
+
+// FILTERS ---------------------------------------------------------------------
+@bg-blur: 12px; // 2, 4, 8, 12, 16, 20, 24
+//@bgBlurFallback: ~'hsl(var(---bg) / 0.9)'; // fallback must be at least 0.9 opacity
+.bg-blur { // Define this effect first so that background colors can override fallback
+  backdrop-filter: blur(@bg-blur);
+  // To be used as inner content of container with background image
+  //z-index: -1; // avoid covering other absolutely positioned elements
+}
+
+.bg-blur-small {
+  backdrop-filter: blur(@bg-blur * 8 / 12);
+}
+
+.bg-blur-smaller {
+  backdrop-filter: blur(@bg-blur * 4 / 12);
+}
+
+.bg-blur-smallest {
+  backdrop-filter: blur(@bg-blur * 2 / 12);
+}
+
+.bg-blur-large {
+  backdrop-filter: blur(@bg-blur * 16 / 12);
+}
+
+.bg-blur-larger {
+  backdrop-filter: blur(@bg-blur * 20 / 12);
+}
+
+.bg-blur-largest {
+  backdrop-filter: blur(@bg-blur * 24 / 12);
+}
+
+// COLORS ----------------------------------------------------------------------
+.bg {
+  background-color: var(--bg);
+}
+
+.colors(@selectorPrefix: ~'.bg-'; @property: background-color;);
+
+// -------------------------------------
+.bg-grey {
+  background-color: var(--grey);
+}
+
+.bg-grey-light {
+  background-color: var(--grey-light);
+}
+
+.bg-grey-lighter {
+  background-color: var(--grey-lighter);
+}
+
+.bg-grey-lightest {
+  background-color: var(--grey-lightest);
+}
+
+.bg-grey-lightest-2x {
+  background-color: var(--grey-lightest-2x);
+}
+
+.bg-grey-dark {
+  background-color: var(--grey-dark);
+}
+
+.bg-grey-darker {
+  background-color: var(--grey-darker);
+}
+
+.bg-grey-darkest {
+  background-color: var(--grey-darkest);
+}
+
+.bg-grey-darkest-2x {
+  background-color: var(--grey-darkest-2x);
+}
+
+// -------------------------------------
+.bg-highlight {
+  background-color: var(--highlight);
+}
+
+.bg-highlight-light {
+  background-color: var(--highlight-light);
+}
+
+.bg-highlight-lighter {
+  background-color: var(--highlight-lighter);
+}
+
+.bg-highlight-lightest {
+  background-color: var(--highlight-lightest);
+}
+
+.bg-highlight-dark {
+  background-color: var(--highlight-dark);
+}
+
+.bg-highlight-darker {
+  background-color: var(--highlight-darker);
+}
+
+.bg-highlight-darkest {
+  background-color: var(--highlight-darkest);
+}
+
+// -------------------------------------
+.bg-shadow {
+  background-color: var(--shadow);
+}
+
+.bg-shadow-light {
+  background-color: var(--shadow-light);
+}
+
+.bg-shadow-lighter {
+  background-color: var(--shadow-lighter);
+}
+
+.bg-shadow-lightest {
+  background-color: var(--shadow-lightest);
+}
+
+.bg-shadow-lightest-2x {
+  background-color: var(--shadow-lightest-2x);
+}
+
+.bg-shadow-dark {
+  background-color: var(--shadow-dark);
+}
+
+.bg-shadow-darker {
+  background-color: var(--shadow-darker);
+}
+
+.bg-shadow-darkest {
+  background-color: var(--shadow-darkest);
+}
+
+.bg-shadow-darkest-2x {
+  background-color: var(--shadow-darkest-2x);
+}
+
+.bg-transparent {
+  background-color: transparent;
+}
+
+// BACKGROUND IMAGE ----------------------------------------------------------------------------------------------------
+
+.bg-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+// Overlay gradient for use with Text over image background
+.bg-image-gradient {
+  background-color: var(--neutral); // background color when loading image
+
+  &:before {
+    .position-fill();
+    content: '';
+    background-image: linear-gradient(0deg, transparent, ~'hsl(var(---bg) / 0.9)');
+  }
+}
+
+// GLASS EFFECTS ----------------------------------------------------------------
+
+.bg-glass {
+  background: ~'hsl(var(---grey) / 0.5)';
+}
+
+.bg-glass-dark {
+  background: ~'hsl(var(---dark) / 0.5)';
+}
+
+.bg-glass-light {
+  background: ~'hsl(var(---light) / 0.1)'; // must be maximum 0.1 for Firefox fallback in homepage
+}
+
+.bg-glass-lighter {
+  background: ~'hsl(var(---light) / 0.8)'; // must be at least 0.8 for Firefox fallback accessibility
+
+  .theme-dark & {
+    background: ~'hsl(var(---light) / 0.4)';
+  }
+}
+
+/* if backdrop support: very transparent and blurred (only needed if opacity is lower than 0.9) */
+@supports (backdrop-filter: blur(@bg-blur)) {
+  .bg-glass {
+    background: ~'hsl(var(---grey) / 0.3)';
+    backdrop-filter: blur(13px);
+  }
+
+  .bg-glass-dark {
+    background: ~'hsl(var(---dark) / 0.3)';
+    backdrop-filter: blur(13px);
+  }
+
+  .bg-glass-light {
+    backdrop-filter: blur(13px);
+  }
+
+  .bg-glass-lighter {
+    background: ~'hsl(var(---light) / 0.4)'; // at least 0.4 for Editor Tools
+    backdrop-filter: blur(13px);
+
+    .theme-dark & {
+      background: ~'hsl(var(---light) / 0.2)';
+    }
+  }
+}
+
+.glass-outline {
+  &:before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    left: 5px;
+    pointer-events: none;
+    background: linear-gradient(to bottom, ~'hsl(var(---light) / 0.05)' 0%, ~'hsl(var(---light) / 0.05)' 2%);
+    border-radius: var(--radius);
+
+    .theme-dark & {
+      background: linear-gradient(to bottom, ~'hsl(var(---light) / 0.025)' 0%, ~'hsl(var(---light) / 0.025)' 2%);
+    }
+  }
+}
+
+.glass-outline-light {
+  &:extend(.glass-outline all);
+
+  &:before {
+    background: linear-gradient(to bottom, ~'hsl(var(---light) / 0.5)' 0%, ~'hsl(var(---light) / 0.5)' 2%);
+
+    .theme-dark & {
+      background: linear-gradient(to bottom, ~'hsl(var(---light) / 0.25)' 0%, ~'hsl(var(---light) / 0.25)' 2%);
+    }
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Animated background with Gradient Colors
+// -----------------------------------------------------------------------------
+.bg-gradient {
+  // List of color as they transition from top to bottom at 0deg, css rotates clockwise
+  // Green and Orange do not mix because they result in ugly color.
+  @green: darken(rgb(55, 183, 171), 10%);
+  @teal: darken(rgb(44, 166, 203), 10%);
+  @pink: darken(rgb(187, 77, 126), 10%);
+  @orange: darken(rgb(208, 119, 87), 10%);
+  background: linear-gradient(25deg, @green,  @orange, @pink, @teal); // 0deg gradient goes from bottom to top
+  background-size: 400% 400%;
+}
+
+.bg-gradient-animated {
+  &:extend(.bg-gradient);
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Backgrounds with Gradient Colors
+// -----------------------------------------------------------------------------
+//@bgGradient1: var(--shadow-lightest);
+//@bgGradient2: transparent;
+//
+//.bg-gradient-top {
+//  background-image: linear-gradient(to top, @bgGradient1, @bgGradient2);
+//}
+//
+//.bg-gradient-bottom {
+//  background-image: linear-gradient(to bottom, @bgGradient1, @bgGradient2);
+//}
+//
+//.bg-gradient-left {
+//  background-image: linear-gradient(to left, @bgGradient1, @bgGradient2);
+//}
+//
+//.bg-gradient-right {
+//  background-image: linear-gradient(to right, @bgGradient1, @bgGradient2);
+//}
+
+// -----------------------------------------------------------------------------
+// Borders with Gradient Colors
+// -----------------------------------------------------------------------------
+//@borderGradientColor: var(--primary-light);
+//@borderGradientGrey: ~'hsl(var(---grey) / 0.5)';
+//@borderGradientGreyLight: ~'hsl(var(---grey) / 0.3)';
+//@borderSize: var(--border-size, u(1));
+//
+///* Middle Gradient panel with top and bottom borders */
+//.border-gradient-h {
+//  border-style: solid;
+//  border-width: @borderSize 0;
+//  border-image: linear-gradient(to right, transparent, @borderGradientColor 33%, @borderGradientColor 67%, transparent) 1;
+//}
+//
+//.border-gradient-h-right {
+//  &:extend(.border-gradient-h);
+//  border-image: linear-gradient(to right, @borderGradientColor, transparent) 1;
+//}
+//
+//.border-gradient-h-grey {
+//  &:extend(.border-gradient-h);
+//  border-image: linear-gradient(to right, transparent, @borderGradientGrey 33%, @borderGradientGrey 67%, transparent) 1;
+//}
+//
+//.border-gradient-h-grey-light {
+//  &:extend(.border-gradient-h);
+//  border-image: linear-gradient(to right, transparent, @borderGradientGreyLight 33%, @borderGradientGreyLight 67%, transparent) 1;
+//}
+//
+///* Middle Gradient panel with left and right borders */
+//.border-gradient-v {
+//  border-style: solid;
+//  border-width: 0 @borderSize;
+//  border-image: linear-gradient(to bottom, transparent, @borderGradientColor 33%, @borderGradientColor 67%, transparent) 1;
+//}
+//
+//.border-gradient-v-grey {
+//  &:extend(.border-gradient-v);
+//  border-image: linear-gradient(to bottom, transparent, @borderGradientGrey 33%, @borderGradientGrey 67%, transparent) 1;
+//}
+//
+//.border-gradient-top {
+//  &:extend(.border-gradient-h);
+//  border-width: @borderSize 0 0;
+//}
+//
+//.border-gradient-top-left {
+//  &:extend(.border-gradient-top);
+//  border-image: linear-gradient(to right, transparent, @borderGradientColor) 1;
+//}
+//
+//.border-gradient-top-left-grey {
+//  &:extend(.border-gradient-top);
+//  border-image: linear-gradient(to right, transparent, @borderGradientGrey) 1;
+//}
+//
+//.border-gradient-top-right {
+//  &:extend(.border-gradient-top);
+//  border-image: linear-gradient(to right, @borderGradientColor, transparent) 1;
+//}
+//
+//.border-gradient-top-right-grey {
+//  &:extend(.border-gradient-top);
+//  border-image: linear-gradient(to right, @borderGradientGrey, transparent) 1;
+//}
+//
+//.border-gradient-top-grey {
+//  &:extend(.border-gradient-h-grey all);
+//  border-width: @borderSize 0 0;
+//}
+//
+//.border-gradient-top-grey-light {
+//  &:extend(.border-gradient-h-grey-light all);
+//  border-width: @borderSize 0 0;
+//}
+//
+//.border-gradient-bottom {
+//  &:extend(.border-gradient-h);
+//  border-width: 0 0 @borderSize;
+//}
+//
+//.border-gradient-bottom-grey {
+//  &:extend(.border-gradient-h-grey all);
+//  border-width: 0 0 @borderSize;
+//}
+//
+//.border-gradient-left {
+//  .border-gradient-v;
+//  border-width: 0 0 0 @borderSize;
+//}
+//
+//.border-gradient-left-grey {
+//  .border-gradient-v-grey;
+//  border-width: 0 0 0 @borderSize;
+//}
+//
+//.border-gradient-right {
+//  &:extend(.border-gradient-v all);
+//  border-width: 0 @borderSize 0 0;
+//}
+//
+//.border-gradient-to-right {
+//  border-width: @borderSize 0;
+//  border-style: solid;
+//  border-image: linear-gradient(to right, transparent, @borderGradientColor) 1;
+//}
+//
+//.border-gradient-to-right-bottom {
+//  &:extend(.border-gradient-to-right all);
+//  border-width: 0 0 @borderSize 0;
+//}
+
+// -------------------------------------
+.no-bg {
+  background: none;
+}

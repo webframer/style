@@ -1,0 +1,26 @@
+@import "../_mixins";
+/* Must be after button to override button styles */
+
+.breadcrumb__item {
+  @chevronSize: 0.75em;
+  @chevronEnd: ~'calc(100% - @{chevronSize})';
+  font-size: var(--font-small);
+  margin-inline-start: p(2) - @chevronSize;
+  background: linear-gradient(to right, ~'hsl(var(---grey) / 0.4)', ~'hsl(var(---grey) / 0.2)');
+
+  // Chevron right
+  clip-path: polygon(@chevronEnd 0%, 100% 50%, @chevronEnd 100%, 0% 100%, @chevronSize 50%, 0% 0%);
+
+  &:first-child {
+    margin-inline-start: 0;
+    clip-path: polygon(@chevronEnd 0%, 100% 50%, @chevronEnd 100%, 0% 100%, 0% 0%);
+  }
+}
+
+// Button overrides
+button.breadcrumb__item {
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  text-transform: none;
+}

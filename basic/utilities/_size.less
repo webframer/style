@@ -1,0 +1,220 @@
+@import "../_mixins";
+
+.fill {
+  flex: 1; // shorthand for flex-grow: 1, flex-shrink: 1, flex-basis: auto
+  align-self: stretch;
+}
+
+.fill-half {
+  min-width: 50%;
+  min-height: 50%;
+}
+
+.fill-3\/4 {
+  min-width: 75%;
+  min-height: 75%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.full-size {
+  width: 100%;
+  height: 100%;
+}
+
+.full-screen {
+  min-width: 100%;
+  min-height: 100%;
+}
+
+.width-mobile {
+  width: ~'calc(320px - var(--padding) * 2)';
+}
+
+.width-240 {
+  width: u(240);
+}
+
+.width-320 {
+  width: u(320);
+}
+
+.min-height {
+  min-height: min-content;
+}
+
+.min-width {
+  min-width: min-content;
+}
+
+.min-width-0 {
+  min-width: 0;
+}
+
+.min-size-fit {
+  min-width: fit-content;
+  min-height: fit-content;
+}
+
+.min-size-260 {
+  min-width: u(260);
+  min-height: u(260);
+}
+
+.min-size-290 {
+  min-width: u(290);
+  min-height: u(290);
+}
+
+.min-height-290 {
+  min-height: u(290);
+}
+
+.min-height-320 {
+  min-height: u(320);
+}
+
+.min-height-400 {
+  min-height: u(400);
+}
+
+.min-height-480 {
+  min-height: u(480);
+}
+
+.min-width-260 {
+  min-width: u(260);
+}
+
+// Minimum width that fits within the smallest supported phone screen (i.e iPhone SE)
+.min-width-mobile {
+  min-width: ~'calc(320px - var(--padding) * 2)';
+}
+
+.min-width-320 {
+  min-width: u(320);
+}
+
+.min-width-fit {
+  min-width: fit-content;
+}
+
+.width-fit {
+  width: fit-content;
+}
+
+.max-width-fit {
+  max-width: fit-content;
+}
+
+.max-width {
+  max-width: 100%;
+}
+
+// Max 50% minus 1.5 gaps (two to the sides and one in between)
+.max-width-half-with-3-gap {
+  max-width: ~'calc(50% - var(--padding) * 1.5)';
+}
+
+// Max 50% minus 0.5 gap
+.max-width-half-with-1-gap {
+  max-width: ~'calc(50% - var(--padding) * 0.5)';
+}
+
+.max-width-30vw {
+  max-width: 30vw;
+}
+
+.max-width-mobile {
+  max-width: ~'calc(320px - var(--padding) * 2)';
+}
+
+.max-width-320 {
+  max-width: u(320);
+}
+
+.max-width-360 {
+  max-width: u(360);
+}
+
+.max-width-390 {
+  max-width: u(390);
+}
+
+.max-width-400 {
+  max-width: u(400);
+}
+
+.max-width-430 {
+  max-width: u(430);
+}
+
+.max-width-500 {
+  max-width: u(500);
+}
+
+.max-width-600 {
+  max-width: u(600);
+}
+
+.max-width-960 {
+  max-width: u(960);
+}
+
+.min-height-fit {
+  min-height: fit-content;
+}
+
+.height-fit {
+  height: fit-content;
+}
+
+.max-height-fit {
+  max-height: fit-content;
+}
+
+.max-height {
+  max-height: 100%;
+}
+
+.max-height-290 {
+  max-height: u(290);
+}
+
+.max-height-320 {
+  max-height: u(320);
+}
+
+.max-size {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.max-size-fit {
+  max-width: fit-content;
+  max-height: fit-content;
+}
+
+.no-max-width {
+  max-width: none;
+}
+
+.no-max-height {
+  max-height: none;
+}
+
+.width-auto {
+  width: auto;
+  min-width: auto;
+}
+
+.height-auto {
+  height: auto;
+  min-height: auto;
+}

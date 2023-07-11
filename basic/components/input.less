@@ -1,0 +1,313 @@
+@import "../_mixins";
+
+:root { // do not define colors here, because they do not get converted to dark theme, including color --var
+  --input-border-color: var(--grey); // only grey works because it is a neutral color without conversion
+  --input-border-size: var(--border-size);
+  --input-border-style: solid;
+  --input-border: var(--input-border-size) var(--input-border-style) var(--input-border-color);
+  --input-radius: var(--radius);
+  --input-padding-v: 0.5em;
+  --input-padding-h: 0.75em;
+}
+
+@inputPaddingH: var(--padding-small);
+@inputPaddingV: var(--padding-smaller);
+
+// COMMON INPUT STYLES -------------------------------------------------------------------------------------------------
+.inputPadding () {
+  padding: @inputPaddingV @inputPaddingH;
+}
+
+.inputFieldAsTag () {
+  .text-truncate();
+  .stretch(width); // fill min-width to accommodate delete icon
+  padding: 0.25em 0.5em;
+  background: var(--shadow-lighter);
+  border: var(--border);
+  border-radius: 0.25em;
+}
+
+// Base input wrapper style
+.asInput () {
+  // Apply focus state to input wrapper so it can have custom nodes rendered inside input, like dropdowns
+  border: var(--input-border);
+  border-radius: var(--input-radius);
+
+  &.compact:not(.fill) {
+    :not(.input-group) > & { // let input-group fit label, and input should fill the group
+      width: fit-content;
+    }
+  }
+
+  // Let <Input/> control border radius
+  .input-group > & {
+    border-radius: inherit;
+  }
+
+  @{select-interaction},
+  &:focus-within,
+  &.active {
+    border-color: var(--primary);
+  }
+
+  &:focus-within,
+  &.active {
+    .as-focus();
+  }
+
+  &.disabled,
+  &.readonly,
+  &.loading {
+    pointer-events: none;
+  }
+
+  &.disabled {
+    opacity: 0.5;
+  }
+}
+
+.labelRequired () {
+  &:after {
+    content: '*';
+    display: inline-block;
+    margin-inline-start: var(--margin-smaller);
+  }
+}
+
+.input-padding {
+  .inputPadding();
+}
+
+.input-padding-h {
+  .padding-h(@inputPaddingH);
+}
+
+.input-padding-v {
+  .padding-v(@inputPaddingV);
+}
+
+.label-required {
+  .labelRequired();
+}
+
+// -----------------------------------------------------------------------------
+// DEFAULT INPUT ---------------------------------------------------------------
+// -----------------------------------------------------------------------------
+input, select, textarea {
+  flex: 1;
+  width: inherit; // override user-agent default width of 211.5 px that breaks flex layout to take available width
+  background: transparent;
+  text-align: inherit; // override user agent
+  text-shadow: inherit; // override user agent
+  accent-color: var(--accent);
+  &:extend(.input-padding);
+  .no-focus();
+
+  &::placeholder {
+    color: inherit;
+    opacity: 0.5;
+  }
+}
+
+input {
+  &[type="number"] {
+    appearance: textfield; // remove the increment number button for Firefox
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button { // remove the increment number button for Chrome
+      display: none;
+    }
+  }
+}
+
+label.required {
+  &:extend(.label-required all);
+}
+
+.input-group {
+  border-radius: var(--input-radius);
+
+  &.compact:not(.fill) {
+    width: fit-content;
+  }
+}
+
+// Parent wrapper for input
+.input,
+.textarea {
+  .asInput();
+}
+
+.input {
+  align-items: center; // align icons to the middle
+  overflow: hidden; // hide input suffix
+}
+
+.textarea {
+  &.resize {
+    > textarea {
+      resize: none;
+    }
+  }
+
+  > .input__icon {
+    align-items: flex-start;
+
+    > * {
+      .padding-h(@inputPaddingV);
+    }
+  }
+}
+
+.input__label {
+  .padding-v(var(--padding-smaller));
+}
+
+.input__icon { // label
+  display: flex;
+  align-items: center;
+  border-radius: inherit;
+  cursor: pointer;
+
+  > * { // the actual icon
+    border-radius: inherit;
+    &:extend(.input-padding);
+  }
+
+  ~ .input__prefix {
+    padding-inline-start: 0;
+  }
+}
+
+// Style input directly to allow utility override without !important
+input.input__field,
+input.select__input,
+textarea.textarea__field {
+  &.iconStart {
+    padding-inline-start: 0;
+  }
+
+  &.iconEnd {
+    padding-inline-end: 0;
+  }
+}
+
+textarea.textarea__field {
+  // Overlay icon so that textarea resize handle aligns with the bottom corner
+  &.iconEnd {
+    padding-inline-end: ~'calc(@{inputPaddingV} * 2 + 1em)';
+
+    ~ .input__icon {
+      flex-direction: row-reverse;
+      overflow: visible;
+      width: 0;
+    }
+  }
+}
+
+.input__prefix,
+.input__suffix {
+  opacity: 0.5;
+}
+
+.input__prefix {
+  &:extend(.input-padding);
+  padding-inline-end: 0;
+
+  ~ .input__suffix > div,
+  ~ input {
+    padding-inline-start: 0;
+  }
+}
+
+.input__suffix {
+  display: flex; // flex automatically works with rtl
+  //position: relative;
+  overflow: visible;
+  width: 0;
+  pointer-events: none;
+
+  > div {
+    &:extend(.input-padding);
+
+    > .text.invisible {
+      white-space: nowrap;
+    }
+  }
+
+  &.iconStart {
+    > div {
+      padding-inline-start: 0;
+    }
+  }
+}
+
+
+.input__help {
+  font-size: var(--font-small);
+}
+
+.input__error,
+.input__info {
+  padding: var(--padding-smaller);
+}
+
+.input__error {
+  color: var(--error-dark);
+}
+
+.input__info {
+  color: var(--info-dark);
+}
+
+// -----------------------------------------------------------------------------
+// MODIFIERS -------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+
+// Style to match Input
+.input--view {
+  &:extend(.input-padding);
+  font-size: inherit;
+  line-height: inherit; // same as Tailwind default reset
+  max-width: 100%;
+}
+
+// apply this to .input
+.input--tag {
+  .inputFieldAsTag();
+
+  // Input state
+  > .input__field {
+    padding: 0;
+  }
+
+  // View state
+  &.input--view {
+    cursor: text;
+
+    &:not(:disabled) {
+      @{select-interaction} {
+        border-color: var(--primary);
+      }
+    }
+
+    > .text {
+      .text-truncate();
+    }
+  }
+}
+
+// Disable autofill colors
+@-webkit-keyframes autofill {
+  to {
+    color: var(--text);
+    background: transparent;
+  }
+}
+
+input, textarea {
+  &:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+  }
+}

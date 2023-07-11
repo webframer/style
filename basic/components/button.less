@@ -1,0 +1,233 @@
+@import "../_mixins";
+
+@btnSize: 16;
+@btnSizeSmallest: @btnSize * 10 / 16;
+@btnSizeSmaller: @btnSize * 12 / 16;
+@btnSizeSmall: @btnSize * 14 / 16;
+@btnSizeLarge: @btnSize * 20 / 16;
+@btnSizeLarger: @btnSize * 24 / 16;
+@btnSizeLargest: @btnSize * 28 / 16;
+
+:root {
+  --btn-border-size: var(--border-size);
+  --btn-border-style: var(--border-style);
+  --btn-font-family: var(--font-family);
+  --btn-font-size: u(@btnSize);
+  --btn-font-size-smallest: u(@btnSizeSmallest);
+  --btn-font-size-smaller: u(@btnSizeSmaller);
+  --btn-font-size-small: u(@btnSizeSmall);
+  --btn-font-size-large: u(@btnSizeLarge);
+  --btn-font-size-larger: u(@btnSizeLarger);
+  --btn-font-size-largest: u(@btnSizeLargest);
+  --btn-radius: var(--radius);
+  --btn-gradient-angle: 150deg;
+}
+
+@btnBase: var(--btn-font-size);
+@btnSmallest: var(--btn-font-size-smallest);
+@btnSmaller: var(--btn-font-size-smaller);
+@btnSmall: var(--btn-font-size-small);
+@btnLarge: var(--btn-font-size-large);
+@btnLarger: var(--btn-font-size-larger);
+@btnLargest: var(--btn-font-size-largest);
+// 0.5 gives whole pixels for all even number font sizes
+@btnPaddingSizeRatio: 0.5; // 42px height button is a good size: 20px Text + 20px padding + 2px border
+@btnPaddingV: @btnPaddingSizeRatio * 1;
+@btnPaddingH: @btnPaddingSizeRatio * 2;
+
+.btn {
+  // Default button display is block, and it does not align content in the middle with Text,
+  // span inside button also has no padding effect, so using flex display.
+  display: flex;
+  position: relative; // for Spinner and Tooltip
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  // Prevent Button stretching the entire available space inside Flex layout
+  width: fit-content;
+  height: fit-content;
+  color: var(--text); // set default color because Safari has its own button color
+  font-size: var(--btn-font-size);
+  font-style: normal;
+  font-family: var(--btn-font-family);
+  font-weight: @font-weight;
+  line-height: 1;
+  cursor: pointer;
+  background-color: transparent;
+  border: var(--btn-border-size) var(--btn-border-style); // define without color to inherit color from text
+  -webkit-backface-visibility: hidden; // smooth the edges for Chrome when using `transform`
+  .box-shadow();
+
+  // Interaction
+  &:not(:disabled) {
+    @{select-interaction} {
+      &.transparent {
+        color: var(--primary);
+      }
+      &:extend(.btn-hover);
+    }
+  }
+
+  &.active {
+    cursor: auto;
+  }
+
+  &.active,
+  &:active:not(:disabled) {
+    &:extend(.btn-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5 !important; // prevent hover effects
+  }
+
+  .sizeScale(@btnBase, 1);
+}
+
+.btn-hover {
+  background-color: var(--shadow-lighter);
+}
+
+.btn-active {
+  background-color: rgba(0, 0, 0, 0.35); // always darken the button on press, regardless of the theme color.
+}
+
+.btn-smallest {
+  .sizeScale(@btnSmallest, @btnSizeSmallest / @btnSize);
+}
+
+.btn-smaller {
+  .sizeScale(@btnSmaller, @btnSizeSmaller / @btnSize);
+}
+
+.btn-small {
+  .sizeScale(@btnSmall, @btnSizeSmall / @btnSize);
+}
+
+.btn-large {
+  .sizeScale(@btnLarge, @btnSizeLarge / @btnSize);
+}
+
+.btn-larger {
+  .sizeScale(@btnLarger, @btnSizeLarger / @btnSize);
+}
+
+.btn-largest {
+  .sizeScale(@btnLargest, @btnSizeLargest / @btnSize);
+}
+
+.btn {
+  &.circle,
+  &.square {
+    letter-spacing: 0 !important;
+    transform: none;
+    .minSizeScale(@btnBase);
+
+    &.btn-small {
+      .minSizeScale(@btnSmall);
+    }
+
+    &.btn-large {
+      .minSizeScale(@btnLarge);
+    }
+  }
+}
+
+// Removal button behavior
+.btn-delete {
+  // Make hover state look like pressed (active) since on click, the element will disappear
+  &:not(:disabled) {
+    @{select-interaction} {
+      &:extend(.btn-active);
+    }
+  }
+}
+
+.btn-transparent {
+  text-shadow: inherit;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.buttonColors();
+
+.sizeScale (@size, @ratio) {
+  font-size: @size;
+  padding: ~'calc(@{size} * @{btnPaddingV})' ~'calc(@{size} * @{btnPaddingH})';
+  border-radius: ~'calc(var(--btn-radius) * @{ratio})';
+}
+
+.minSizeScale (@size) {
+  min-width: ~'calc(@{size} + @{size} * @{btnPaddingV} * 2 + var(--btn-border-size) * 2)';
+}
+
+
+// -----------------------------------------------------------------------------
+// MIXINS
+// -----------------------------------------------------------------------------
+
+.buttonColors(@colors: @all-colors; @i: length(@colors);) when (@i > 0) {
+  @color: extract(@colors, @i); // color
+  .buttonColor(@color;);
+  .buttonColors(@colors; (@i - 1);); // iterate
+}
+
+// Generate Button for given color (do not use CSS variable directly, so that color name can be used as class)
+.buttonColor(@color: primary; @interaction: '@{color}-dark') {
+  /* Generate '.btn-color' to prune with Tailwind cli */
+  .btn-@{color} {
+    color: white;
+    background-color: var(~'--@{color}');
+    border-color: var(~'--@{color}');
+
+    &:not(:disabled) {
+      @{select-interaction} {
+        background-color: var(~'--@{interaction}');
+      }
+    }
+
+    .btn-gradient(
+      @color: '@{color}-light'; @shade: '@{color}-dark';
+      @focus: '@{color}-lighter'; @focusShade: @color;
+      @active: @color; @activeShade: '@{color}-darker';
+    );
+  }
+}
+
+
+// Button Gradient
+.btn-gradient(
+  @color: primary; @shade: '@{color}-darker'; @angle: var(--btn-gradient-angle);
+  @focus: '@{color}-light'; @focusShade: @color;
+  @active: '@{color}-dark'; @activeShade: '@{color}-darkest';
+) {
+  background-image: linear-gradient(@angle, var(~'--@{color}'), var(~'--@{shade}'));
+  &:not(:disabled) {
+    &:hover, &:focus {
+      background-image: linear-gradient(@angle, var(~'--@{focus}'), var(~'--@{focusShade}'));
+    }
+
+    &:active {
+      background-image: linear-gradient(@angle, var(~'--@{active}'), var(~'--@{activeShade}'));
+    }
+  }
+}
+
+// Same as `.btn-gradient` but with gradient border
+.btn-gradient-border(
+  @color: primary; @shade: '@{color}-darker'; @angle: var(--btn-gradient-angle);
+  @focus: '@{color}-light'; @focusShade: @color; // placeholder for arguments, this mixin is TBD, not used for now.
+  @active: '@{color}-dark'; @activeShade: '@{color}-darkest';
+  @borderColor: neutral-dark; @borderShade: neutral-darker;
+) {
+  // How it works:
+  // since border-image cannot have rounded corners, we use `background-image` for both background and border gradients
+  // with the help of `background-clip: padding-box, border-box;` to create two linear-gradient layers in the element.
+  // see https://gist.github.com/stereokai/36dc0095b9d24ce93b045e2ddc60d7a0
+  border-color: transparent; // hide original border to show `background-image`
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  background-image: linear-gradient(@angle, var(~'--@{color}'), var(~'--@{shade}')),
+  linear-gradient(@angle, var(~'--@{borderColor}'), var(~'--@{borderShade}'));
+}

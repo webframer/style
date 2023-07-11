@@ -1,0 +1,256 @@
+@import "../_mixins";
+//@import "input"; // better to use implicit reference, because it reduces chances of recursive bugs
+
+// Focused style
+.select-option-focus () {
+  background: var(--neutral);
+}
+
+.select {
+  .asInput();
+  align-items: center;
+  width: 100%;
+
+  &.active {
+    > .select__options {
+      border-color: var(--primary);
+    }
+
+    &:not(.upward) {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.upward {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+
+  &.multiple {
+    flex-wrap: wrap;
+
+    &.search > .select__value + input {
+      min-width: u(32);
+    }
+
+    &.done.search > input {
+      .padding-h(0.25em);
+    }
+
+    &.done:not(.search) > input {
+      .padding-h(0);
+      width: 0 !important;
+    }
+  }
+
+  //&.search.query { // highlight the first option when searching that can be selected with Enter inside input
+  //  > .select__options:not(:focus-within) > * {
+  //    > .select__option:first-child {
+  //      .select-option-focus();
+  //    }
+  //  }
+  //}
+}
+
+
+// Selected values
+.select__value {
+  position: relative;
+  display: flex;
+  color: currentColor;
+  align-items: center;
+  .margin-v(0.1875em);
+  .margin-h(0.125em);
+  .stretch(max-width); // fill available width at maximum
+  min-width: 5ch; // to accommodate the delete icon
+
+
+  &:first-child {
+    margin-inline-start: 0.1875em;
+  }
+
+  &:focus-within,
+  @{select-interaction} {
+    color: currentColor;
+    text-decoration: none;
+
+    .select__value__delete {
+      animation: appear @speed-base forwards;
+    }
+  }
+}
+
+.select__value__text {
+  .inputFieldAsTag();
+}
+
+.select__value__delete {
+  position: absolute;
+  inset-inline-end: var(--border-size);
+  padding: 0.25em;
+  backdrop-filter: blur(12px);
+  background-color: var(--shadow-lighter);
+  border-radius: ~'calc(0.25em - var(--border-size))';
+  opacity: 0;
+  cursor: pointer;
+
+  @{select-interaction} {
+    background-color: var(--highlight-lighter);
+  }
+}
+
+input.select__input {
+  .no-focus();
+  .text-truncate();
+  border-width: 0;
+
+  &[readonly]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  &.iconEnd {
+    padding-inline-end: 0;
+  }
+}
+
+@{select-icon} {
+  .select > & {
+    padding: var(--input-padding-v) var(--input-padding-h);
+  }
+
+  + input {
+    .select > & {
+      padding-inline-start: 0;
+    }
+  }
+
+  .select.compact > & {
+    .padding-h(var(--input-padding-v));
+  }
+}
+
+.select__options {
+  //position: fixed; // will be set on open by default
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  z-index: 9;
+  background: var(--grey-lightest-2x);
+  max-height: u(240); // enough space for 6.7 options to show
+  border-radius: var(--input-radius);
+
+  &:not(.fixed) {
+    max-width: 100%;
+    min-width: ~'calc(100% + var(--input-border-size) * 2)';
+    left: ~'calc(var(--input-border-size) * -1)';
+  }
+
+  &.open {
+    border: var(--input-border);
+    .as-focus();
+  }
+
+  &:not(.open) {
+    display: none; // prevent inner content padding from showing through
+  }
+
+  &.upward {
+    top: auto;
+    bottom: 100%;
+    border-bottom: 0;
+  }
+
+  &:not(.upward) {
+    border-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.upward {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.select__option {
+  padding: var(--input-padding-v) var(--input-padding-h);
+  align-items: center;
+  cursor: pointer;
+
+  &:focus,
+  &.focused {
+    .select-option-focus();
+  }
+
+  &:not(:first-child) {
+    :not(.upward) > * > & {
+      border-top: var(--border);
+    }
+
+    .upward > * > & {
+      border-bottom: var(--border);
+    }
+  }
+
+  &.selected {
+    background: var(--highlight-light);
+  }
+
+  // Make option inherit text alignment
+  > .text {
+    width: 100%;
+  }
+
+  // Highlight matched search
+  .text b {
+    text-decoration: underline;
+  }
+}
+
+.select__option > .option__preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  .squareMinMax(2em);
+  border-radius: var(--radius-smaller);
+  margin-inline-end: var(--margin-smaller);
+  font-family: var(--preview-font-family, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace); // for font-weight preview
+
+  // Style pseudo with border so that background color can overlay it for more clean look, with transparent fallback
+  // this also allows the main content to have different border width
+  > .option__preview__default:before {
+    .position-fill();
+    .object();
+    z-index: -1;
+    border: var(--border);
+    border-radius: inherit;
+  }
+
+  > * {
+    font-size: 1.5em;
+    border-radius: inherit;
+  }
+
+  > div {
+    .position-fill();
+    margin: auto;
+  }
+}
+
+
+// SELECT NESTED -------------------------------------------------------------------------------------------------------
+
+.select-nested__option {
+  &:focus-within,
+  @{select-interaction},
+  &.open {
+    color: var(--dark);
+    background: var(--shadow-lighter);
+  }
+
+  .select-nested & {
+    border-radius: var(--radius-small);
+  }
+}

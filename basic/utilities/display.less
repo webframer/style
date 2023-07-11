@@ -1,0 +1,183 @@
+@import "../_mixins";
+
+// Restore default browser styling because _layout.less override col/row with display flex
+[hidden] {
+  display: none;
+}
+
+// For Preload component to run scripts
+.hidden-preloader {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.hidden-from-view {
+  position: fixed;
+  top: 100vh;
+  left: 100vw;
+}
+
+.hidden-almost {
+  opacity: 0.001;
+}
+
+.hidden-behind {
+  z-index: -99;
+}
+
+// Hide elements that require DOM rendering, like WebGL canvas; or
+// only display content to screen readers.
+// See: http://a11yproject.com/posts/how-to-hide-content/
+.hidden-visually,
+.sr-only {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -0.5px;
+  padding: 0;
+  border: 0;
+}
+
+// OPACITY EFFECTS -----------------------------------------------------------------------------------------------------
+.fade {
+  .fadeOnBlur(0.6); // 0.5 is not enough contrast in most cases
+}
+
+.fade-2\/3 {
+  .fadeOnBlur(0.33);
+}
+
+.fade-1\/2 {
+  .fadeOnBlur(0.5);
+}
+
+.fade-1\/3 {
+  .fadeOnBlur(0.67);
+}
+
+.fade-1\/4 {
+  .fadeOnBlur(0.75);
+}
+
+.fade-1\/5 {
+  .fadeOnBlur(0.8);
+}
+
+.fade-1\/10 {
+  .fadeOnBlur(0.9);
+}
+
+.faded {
+  opacity: 0.6;
+}
+
+.faded-2\/3 {
+  opacity: 0.33;
+}
+
+.faded-1\/2 {
+  opacity: 0.5;
+}
+
+.faded-1\/3 {
+  opacity: 0.67;
+}
+
+.faded-1\/4 {
+  opacity: 0.75;
+}
+
+.faded-1\/5 {
+  opacity: 0.8;
+}
+
+.faded-1\/10 {
+  opacity: 0.9;
+}
+
+.no-fade {
+  .fadeOnBlur(1);
+}
+
+// MASK IMAGE EFFECTS --------------------------------------------------------------------------------------------------
+@fadeSizeVar: var(--padding);
+@fadeSize: var(--wf-fade-size);
+
+.fade-top {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1));
+}
+
+.fade-bottom {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to top, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1));
+}
+
+.fade-top.fade-bottom,
+.fade-v {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1) ~'calc(100% - @{fadeSize})', transparent);
+}
+
+.fade-left {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1));
+}
+
+.fade-right {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to left, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1));
+}
+
+.fade-left.fade-right,
+.fade-h {
+  --wf-fade-size: @fadeSizeVar;
+  mask-image: linear-gradient(to right, transparent, rgba(0, 0, 0, 1) @fadeSize, rgba(0, 0, 0, 1) ~'calc(100% - @{fadeSize})', transparent);
+}
+
+.fade-to-top {
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 1), transparent);
+}
+
+.fade-to-bottom {
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), transparent);
+}
+
+.fade-to-left {
+  mask-image: linear-gradient(to left, rgba(0, 0, 0, 1), transparent);
+}
+
+.fade-to-right {
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 1), transparent);
+}
+
+// Fade Sizes
+.fade-small {
+  --wf-fade-size: var(--padding-small);
+}
+
+.fade-smaller {
+  --wf-fade-size: var(--padding-smaller);
+}
+
+.fade-smallest {
+  --wf-fade-size: var(--padding-smallest);
+}
+
+.fade-large {
+  --wf-fade-size: var(--padding-large);
+}
+
+.fade-larger {
+  --wf-fade-size: var(--padding-larger);
+}
+
+.fade-largest {
+  --wf-fade-size: var(--padding-largest);
+}

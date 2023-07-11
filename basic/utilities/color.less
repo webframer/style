@@ -1,0 +1,21 @@
+@import "../_mixins";
+
+.color-bg {
+  color: var(--bg);
+}
+
+.color-text {
+  color: var(--text);
+}
+
+.colors(@selectorPrefix: ~'.color-'; @property: color;);
+
+// Example: .to-primary (for .bg-gradient-to-* classes)
+.colors(@selectorPrefix: ~'.from-'; @property: --tw-gradient-from;);
+.colors(@selectorPrefix: ~'.to-'; @property: --tw-gradient-to;);
+
+.from-primary {
+  --tw-gradient-from: var(--primary);
+  --tw-gradient-to: ~'hsl(var(---primary) / 0)';
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}

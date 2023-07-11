@@ -1,0 +1,90 @@
+@import "../_mixins";
+//@import "_container"; // better to use implicit reference, because it reduces chances of recursive bugs
+
+.modal {
+  display: none;
+  max-height: 100vh; // prevent modal from exceeding screen height
+
+  &.active {
+    .flex--fill();
+    .position-fill();
+    background-color: var(--shadow-darker);
+    backdrop-filter: blur(13px);
+    //&:extend(.align-center all); // this causes more troubles than its worth
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; // navbar z-index is 1000
+
+    //&:extend(.fade-in-fast all);
+    //.modal__box {
+    //  &:extend(.fade-in-up all);
+    //}
+  }
+}
+
+.modal__backdrop {
+  .position-fill();
+}
+
+.modal__box {
+  @heightOffset: u(@screen-height-offset);
+  &:extend(.scrollable all);
+  z-index: 1; // for float label forms
+  max-height: ~'calc(100vh - @{heightOffset})';
+  background-color: var(--bg); // inner content must have transparent background to preserve round corners
+  border-radius: var(--radius-large);
+  box-shadow: 0 0.1rem 0.4rem 0 var(--shadow);
+
+  &:not(.full-screen) {
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  &.full-screen {
+    min-width: 100%;
+    min-height: 100%;
+  }
+}
+
+.modal__content {
+  .flex--fill();
+  //&:extend(.min-height all); // uncomment to enable scrolling by default
+
+  //h2:first-child {
+  //  margin: 0;
+  //  padding: @padding-small @padding-base;
+  //  background: @color-bg-inverse;
+  //  color: @color-text-inverse;
+  //}
+
+  > .loading--placeholder {
+    .squareMin(u(260));
+    position: relative !important;
+  }
+}
+
+.modal__title {
+  font-size: 150%;
+  margin: 0;
+  padding: var(--padding-larger) var(--padding-larger) var(--padding-smaller);
+  text-align: center;
+
+  // Tab header
+  //> * {
+  //  &:first-child {
+  //    border-top-left-radius: var(--radius-large);
+  //  }
+  //
+  //  &:last-child {
+  //    border-top-right-radius: var(--radius-large);
+  //  }
+  //}
+}
+
+.modal__body {
+  padding: var(--padding) var(--padding-larger);
+}
+
+.modal__footer {
+  padding: var(--padding) var(--padding-larger) var(--padding-largest);
+}

@@ -1,0 +1,157 @@
+@import "../_mixins";
+
+// =============================================================================
+// GENERAL BASE STYLING FOR THE APP
+// =============================================================================
+
+* { // do not add other selectors here, like `:not(.app)` because it will override form inputs
+  /* Disable mobile touch feedback box highlighting */
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -moz-tap-highlight-color: rgba(0, 0, 0, 0);
+
+  /* Applying transition by default causes flickering on scroll on Safari */
+  //transition: @speed-transition; // animating by default creates a nice UI feel
+  /*
+  - Improve performance by promoting all elements to Composite layer
+  - Stop scroll flickering of content with `transform` on iOS Safari
+  */
+  backface-visibility: hidden;
+  //transform: translate3d(0, 0, 0); // or this, same effect as above
+
+  // do not add other selectors here, like `[tabIndex="-1"]` because it will override form inputs
+  .focus();
+}
+
+// This may be replaced with specific class to improve performance
+[tabIndex="-1"] {
+  .no-outline();
+}
+
+html, body, #root, #__next {
+  .flex-col();
+}
+
+html {
+  height: 100%;
+}
+
+body, .body {
+  .font(@lineHeight: var(--line-height););
+  min-height: 100%; // for full-screen background effects
+  color: var(--text);
+  background-color: var(--bg);
+  overflow-x: hidden; // disable horizontal scroll
+
+  /* Make text lighter on dark background */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+#root, #__next, .app {
+  .flex-fill();
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  .bold();
+  padding: 0;
+  //margin: 0; Tailwind
+}
+
+h1, .h1 {
+  font-size: (@size-h1 / @size-base * 100%); // define in percentage to work nicely on mobile
+
+  small {
+    color: inherit;
+    font-size: 80%;
+  }
+
+  /* Resize on mobile */
+  @media screen and (max-width: @screen-tablet - @screen-unit) {
+    font-size: 0.8 * (@size-h1 / @size-base * 100%);
+  }
+
+  /* Resize on mobile */
+  @media screen and (max-width: @screen-mobile-small) {
+    font-size: 0.7 * (@size-h1 / @size-base * 100%);
+  }
+}
+
+h2, .h2 {
+  font-size: (@size-h2 / @size-base * 100%); // define in percentage to work nicely on mobile
+  text-transform: capitalize;
+
+  /* Resize on mobile */
+  @media screen and (max-width: @screen-tablet - @screen-unit) {
+    font-size: 0.85 * (@size-h2 / @size-base * 100%);
+  }
+
+  /* Resize on mobile */
+  @media screen and (max-width: @screen-mobile-small) {
+    font-size: 0.75 * (@size-h2 / @size-base * 100%);
+  }
+}
+
+h3, .h3 {
+  font-size: (@size-h3 / @size-base * 100%); // define in percentage to work nicely on mobile
+
+  small {
+    color: inherit;
+    font-size: 80%;
+    opacity: 0.8;
+  }
+
+  /* Resize on mobile */
+  @media screen and (max-width: @screen-tablet - @screen-unit) {
+    font-size: 0.9 * (@size-h3 / @size-base * 100%);
+  }
+}
+
+h4, .h4 {
+  font-size: (@size-h4 / @size-base * 100%); // define in percentage to work nicely on mobile
+}
+
+h5, .h5 {
+  font-size: (@size-h5 / @size-base * 100%); // define in percentage to work nicely on mobile
+}
+
+h6, .h6 {
+  font-size: (@size-h6 / @size-base * 100%); // define in percentage to work nicely on mobile
+}
+
+p, .p {
+  //margin: 0; Tailwind
+  line-height: @line-height-base;
+  white-space: pre-line; // for displaying new lines, like textarea
+
+  + p, + .p {
+    margin-top: var(--margin);
+  }
+}
+
+a, .a {
+  .click-color();
+  text-decoration: none;
+
+  @{select-interaction},
+  &:focus-visible {
+    text-decoration: underline;
+    .no-outline();
+    //outline-offset: 0.25em;
+  }
+}
+
+ul, ol {
+  list-style: revert; // override Tailwind reset
+  padding: revert; // override Tailwind reset
+
+  li + li {
+    margin-top: var(--margin);
+  }
+}
+
+b, strong {
+  .bold();
+}

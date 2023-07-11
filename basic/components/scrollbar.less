@@ -1,0 +1,80 @@
+@import "../_mixins";
+@scrollbar-color: ~'hsl(var(---grey) / 0.6)';
+@scrollbar-size: var(--scrollbar-size, u(5));
+
+/* Prevent scrollbar from taking space and changing layout https://caniuse.com/mdn-css_properties_scrollbar-gutter */
+.scroll, .scrollable {
+  // Disable gutter, because Safari is the only browser that needs it, but it did not work.
+  // The gutter causes layout shift in components, like Select dropdown.
+  //scrollbar-gutter: stable both-edges; // Most browsers, except Safari as of Nov 2022
+  scrollbar-color: @scrollbar-color transparent; // Firefox only as of Nov 2022
+  scrollbar-width: thin; // Firefox only as of Nov 2022 (auto | thin | none) - does not work with CSS length
+}
+
+/*
+ * Update: as of Nov 2022, there is a way to detect Safari with CSS https://codepen.io/karlsson/pen/zYNYwNO
+ * As of Nov, 2018, there is no way to detect OS on Safari and Chrome with CSS.
+ * Ideally, we only want to style scrollbar on Windows, and leave it as default on Safari,
+ * because the desired effect is overlay scrollbar with content background showing through.
+ * However, as soon as the scrollbar is styled, transparent track background shows the content of parent container,
+ * and not the overflowing content itself, like the desired default behavior in Mac OS.
+*/
+::-webkit-scrollbar {
+  width: @scrollbar-size;
+  height: @scrollbar-size;
+}
+
+/* this targets the default scrollbar (compulsory) */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* the new scrollbar will have a flat appearance with the set background color */
+::-webkit-scrollbar-thumb {
+  background: @scrollbar-color;
+  border-radius: var(--radius-large);
+  border: 1px solid @scrollbar-color;
+}
+
+/* this will style the thumb, ignoring the track */
+::-webkit-scrollbar-button {
+}
+
+/* optionally, style the top + bottom buttons (left and right for horizontal bars) */
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* if both the vertical + horizontal bars appear, the right bottom corner needs to be styled */
+.no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  scrollbar-width: none; // for Firefox
+}
+
+// -----------------------------------------------------------------------------
+// SCROLL SHADOW ---------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Apply background shadow to the top and bottom when content overflows.
+// https://stackoverflow.com/questions/44793453/how-do-i-add-a-top-and-bottom-shadow-while-scrolling-but-only-when-needed
+// Note: this does not work with Scroll view because the shadow effect is underneath content.
+// If applied to pseudo:after element, the effect overlays the entire content (not just the shadow part),
+// because white color is used to cover the shadow, which reveals on scroll.
+//.scrollbox {
+//  background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)),
+//  linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+//    /* Shadows */ radial-gradient(50% 0, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+//  radial-gradient(50% 100%, farthest-side, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+//  background: /* Shadow covers */ linear-gradient(white 30%, rgba(255, 255, 255, 0)),
+//  linear-gradient(rgba(255, 255, 255, 0), white 70%) 0 100%,
+//    /* Shadows */ radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)),
+//  radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, .2), rgba(0, 0, 0, 0)) 0 100%;
+//  background-repeat: no-repeat;
+//  //background-color: red;
+//  background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+//
+//  /* Opera doesn't support this in the shorthand */
+//  background-attachment: local, local, scroll, scroll;
+//}

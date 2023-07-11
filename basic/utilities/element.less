@@ -1,0 +1,59 @@
+@import "../_mixins";
+
+@divideBorderStart: var(--border-size) var(--border-style) hsla(0, 0, 100%, 0.075);
+@divideBorderEnd: var(--border-size) var(--border-style) hsla(0, 0, 0, 0.3);
+
+// Tailwind only have divide-[x,y,color...] classes
+.divide {
+  border-top: @divideBorderEnd;
+  border-bottom: @divideBorderStart;
+  border-left: @divideBorderEnd;
+  border-right: @divideBorderStart;
+}
+
+.divide--wrap {
+  border-top: @divideBorderStart;
+  border-bottom: @divideBorderEnd;
+  border-left: @divideBorderStart;
+  border-right: @divideBorderEnd;
+}
+
+.divide-h {
+  border-left: @divideBorderEnd;
+  border-right: @divideBorderStart;
+}
+
+.divide-h--wrap {
+  border-left: @divideBorderStart;
+  border-right: @divideBorderEnd;
+}
+
+.divide-h--left {
+  border-left: @divideBorderStart;
+}
+
+.divide-h--right {
+  border-right: @divideBorderEnd;
+}
+
+.divide-v {
+  border-top: @divideBorderEnd;
+  border-bottom: @divideBorderStart;
+}
+
+.divide-v--wrap {
+  border-top: @divideBorderStart;
+  border-bottom: @divideBorderEnd;
+}
+
+.divide-v--top {
+  border-top: @divideBorderStart;
+}
+
+.divide-v--bottom {
+  border-bottom: @divideBorderEnd;
+}
+
+.img-cover {
+  .img-cover();
+}

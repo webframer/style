@@ -1,0 +1,19 @@
+@import "../_mixins";
+
+// Vertical Tab with icons
+.app__sidebar {
+  > .tabs__list {
+    > * > .tabs__tab.active {
+      opacity: 1;
+      background: var(--shadow-lightest);
+      border-block-start-color: var(--shadow-lightest);
+      border-inline-start-color: var(--shadow-lightest);
+      border-block-end-color: var(--highlight-light);
+      pointer-events: none;
+
+      > * {
+        opacity: 0.6;
+      }
+    }
+  }
+}

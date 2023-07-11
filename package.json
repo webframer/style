@@ -1,0 +1,17 @@
+{
+  "name": "@webframer/style",
+  "version": "0.0.1",
+  "description": "Themes and CSS Styles for UI Components",
+  "license": "MIT",
+  "homepage": "https://github.com/webframer/style",
+  "sideEffects": false,
+  "keywords": [
+    "css",
+    "styles",
+    "themes"
+  ],
+  "scripts": {
+    "build": "rm -fr dist/* && tsc -p ../../scripts/npm/@style-tsconfig.json && node ../../scripts/npm/build.js",
+    "push": "npm run build && cd dist && npm publish --access public && cd ../"
+  }
+}

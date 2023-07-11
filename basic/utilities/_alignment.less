@@ -1,0 +1,248 @@
+@import "../_mixins";
+
+// -----------------------------------------------------------------------------
+// ALIGNMENT
+// -----------------------------------------------------------------------------
+
+.align-center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.align-right {
+  justify-content: flex-end;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.center-self {
+  .col > & {
+    align-self: center;
+  }
+
+  .row > & {
+    // There is no 'justify-self' at the moment of writing, only 'justify-content'
+    // https://stackoverflow.com/questions/32551291/in-css-flexbox-why-are-there-no-justify-items-and-justify-self-properties
+    .margin-h(auto);
+  }
+}
+
+.middle-self {
+  .col > & {
+    .margin-v(auto);
+  }
+
+  .row > & {
+    align-self: center;
+  }
+}
+
+.left-self {
+  .col > & {
+    align-self: flex-start;
+  }
+
+  .row > & {
+    margin-right: auto;
+  }
+}
+
+.right-self {
+  .col > & {
+    align-self: flex-end;
+  }
+
+  .row > & {
+    margin-left: auto;
+  }
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+.position-centered {
+  .position-centered();
+}
+
+.position-center {
+  position: absolute;
+  left: 50%;
+  right: auto;
+  margin-right: -50%; // offset right position to avoid creating scrollbar
+  transform: translate3d(-50%, 0, 0);
+}
+
+.position-middle {
+  position: absolute;
+  top: 50%;
+  bottom: auto;
+  margin-bottom: -50%; // offset bottom position to avoid creating scrollbar
+  transform: translate3d(0, -50%, 0);
+}
+
+.position-sticky {
+  position: sticky;
+  top: 0; // sticky must have top/left/right/bottom defined
+  z-index: 9; // for Safari, z-index is absolute value, without relative parent index
+}
+
+.position-top {
+  position: absolute;
+  top: 0;
+}
+
+.position-left {
+  position: absolute;
+  left: 0;
+}
+
+.position-right {
+  position: absolute;
+  right: 0;
+}
+
+.position-start {
+  position: absolute;
+  inset-inline-start: 0;
+}
+
+.position-end {
+  position: absolute;
+  inset-inline-end: 0;
+}
+
+.position-top-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.position-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.position-bottom {
+  position: absolute;
+  bottom: 0;
+}
+
+.position-bottom-center {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  margin-right: -50%; // offset left position to avoid creating scrollbar
+}
+
+.position-bottom-right {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.position-bottom-left {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.position-bottom-start {
+  position: absolute;
+  inset-inline-start: 0;
+  bottom: 0;
+}
+
+.position-bottom-end {
+  position: absolute;
+  inset-inline-end: 0;
+  bottom: 0;
+}
+
+.position-fill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.position-fill-fixed {
+  &:extend(.position-fill all);
+  position: fixed;
+}
+
+.from-top,
+.from-bottom,
+.from-left,
+.from-right {
+  position: absolute;
+  // @note: setting transform directly on the element only works with with:
+  //  width: fit-content;
+  //  height: fit-content;
+  // But `fit-content` or `max-content` did not work on Safari at the moment of writing.
+  // This is because the direct element with position absolute takes full width/height of the parent element, not itself
+  // so then transform applies to those dimensions of the parent, not the element itself - which is the desired effect.
+  // => this can be refactored when browsers provide full support for the missing features.
+  //width: fit-content;
+  //height: fit-content;
+}
+
+.from-top { // need to offset child height
+  bottom: 100%;
+  // avoid transform to work with nested embedded Tooltip
+  //> * { // use this if not `fit-content` like described in the @note above
+  //  transform: translate3d(0, -100%, 0);
+  //}
+}
+
+.from-left { // need to offset child width
+  right: 100%;
+  //> * {
+  //  transform: translate3d(-100%, 0, 0);
+  //}
+}
+
+.from-right { // need to offset parent width
+  left: 100%;
+}
+
+.from-bottom { // need to offset parent height
+  top: 100%;
+}
+
+.start-0 {
+  inset-inline-start: 0;
+}
+
+.end-0 {
+  inset-inline-end: 0;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+.reverse-scroll {
+  direction: rtl;
+
+  > * {
+    direction: ltr;
+  }
+
+  &.rtl,
+  .rtl & {
+    direction: ltr;
+
+    > * {
+      direction: rtl;
+    }
+  }
+}

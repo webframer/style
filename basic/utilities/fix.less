@@ -1,0 +1,11 @@
+// @see https://stackoverflow.com/a/36576083
+.fix-td-height {
+  height: 1px;
+}
+
+// Fix for Firefox
+@-moz-document url-prefix() {
+  .fix-td-height {
+    height: 100%;
+  }
+}
